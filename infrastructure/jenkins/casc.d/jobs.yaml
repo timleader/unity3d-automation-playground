@@ -10,7 +10,7 @@ jobs:
                     github('timleader/unity3d-automation-playground', 'https')
                     credentials('github-api-token')
                 }
-                branch('*/master')
+                branch('*/main')
               }
             }
             scriptPath('infrastructure/jobs/unity3d_license/Jenkinsfile')
