@@ -7,7 +7,7 @@ jobs:
             scm {
               git {
                 remote {
-                    github('timleader/unity-automation-playground', 'https')
+                    github('timleader/unity3d-automation-playground', 'https')
                     credentials('github-api-token')
                 }
                 branch('*/master')
@@ -26,10 +26,10 @@ jobs:
         }
         branchSources {
           github {
-            id('unity-automation-playground--build-android')
+            id('unity3d-automation-playground--build-android')
             scanCredentialsId('github-api-token')
             repoOwner('timleader')
-            repository('unity-automation-playground')
+            repository('unity3d-automation-playground')
           }
         }
       }
@@ -42,10 +42,10 @@ jobs:
         }
         branchSources {
           github {
-            id('unity-automation-playground--build-android')
+            id('unity3d-automation-playground--build-android')
             scanCredentialsId('github-api-token')
             repoOwner('timleader')
-            repository('unity-automation-playground')
+            repository('unity3d-automation-playground')
           }
         }
       }
@@ -58,10 +58,10 @@ jobs:
         }
         branchSources {
           github {
-            id('unity-automation-playground--build-android')
+            id('unity3d-automation-playground--build-android')
             scanCredentialsId('github-api-token')
             repoOwner('timleader')
-            repository('unity-automation-playground')
+            repository('unity3d-automation-playground')
           }
         }
       }
