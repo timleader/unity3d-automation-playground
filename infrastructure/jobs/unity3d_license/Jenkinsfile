@@ -1,0 +1,70 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Unity3D License - Create Activation File') { 
+            agent {         
+                docker {          
+                    image 'unityci/editor:2022.3.35f1-android-3'
+                    args '-v ${PWD}:/usr/src/app -v /tmp:/.local -v /tmp:/.config -v /tmp:/.cache -w /usr/src/app'
+                    reuseNode true       
+                } 
+            }   
+            steps {
+                sh 'xvfb-run \
+                        --auto-servernum \
+                        --server-args="-screen 0 640x480x24" \
+                        /opt/unity/Editor/Unity \
+                        -quit \
+                        -batchmode \
+                        -nographics \
+                        -createManualActivationFile'
+
+                stash includes: '*.alf', name: 'unity_activation_file'
+            }
+        }
+        stage('Unity3D License - Request License File') { 
+            agent {
+                docker {
+                    image 'ghcr.io/puppeteer/puppeteer:23.9.0'
+                    args '-u root --privileged'
+                }
+            }
+            environment {
+                UNITY_ACCOUNT = credentials('unity-account')
+            }
+            steps {
+                unstash 'unity_activation_file'
+
+                sh "npm install --prefix /home/pptruser unity-activate"
+                sh "/home/pptruser/node_modules/.bin/puppeteer browsers install"
+                sh "/home/pptruser/node_modules/.bin/unity-activate --username ${UNITY_ACCOUNT_USR} --password ${UNITY_ACCOUNT_PSW} Unity_v2022.3.35f1.alf"
+
+                stash includes: 'Unity_v2022.x.ulf', name: 'unity_license_file'
+            }
+        }
+        stage('Unity3D License - Activate') { 
+            agent {         
+                docker {          
+                    image 'unityci/editor:2022.3.35f1-android-3'
+                    args '-v ${PWD}:/usr/src/app -v /tmp:/.local -v /tmp:/.config -v /tmp:/.cache -w /usr/src/app'
+                    reuseNode true       
+                } 
+            }   
+            steps {
+                unstash 'unity_license_file'
+
+                sh 'xvfb-run \
+                        --auto-servernum \
+                        --server-args="-screen 0 640x480x24" \
+                        /opt/unity/Editor/Unity \
+                        -quit \
+                        -batchmode \
+                        -nographics \
+                        -manualLicenseFile Unity_v2022.x.ulf'
+                
+                archiveArtifacts artifacts: 'Unity_v2022.x.ulf', allowEmptyArchive: false
+            }
+        }
+    }
+}

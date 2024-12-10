@@ -1,0 +1,33 @@
+pipeline {
+    agent none
+    parameters {
+        choice(name: 'UNITY_VERSION', choices: ['2022.3.35f1-android-3', '2022.3.38f1-android-3'], description: 'Select Unity version')
+    }
+    stages {
+        stage('Unity3D Build - Android') { 
+            agent {         
+                docker {          
+                    image "unityci/editor:${params.UNITY_VERSION}"
+                    args '-v ${PWD}:/usr/src/app -v /tmp:/.local -v /tmp:/.config -v /tmp:/.cache -w /usr/src/app'
+                    reuseNode true       
+                } 
+            }   
+            steps {
+                sh 'rm -f sample_project/Build/Android/*.apk'
+                
+                sh 'xvfb-run \
+                        --auto-servernum \
+                        --server-args="-screen 0 640x480x24" \
+                        /opt/unity/Editor/Unity \
+                        -projectPath sample_project \
+                        -quit \
+                        -batchmode \
+                        -nographics \
+                        -executeMethod BundleAndBuild.Build \
+                        -logFile -'
+                       
+                archiveArtifacts artifacts: 'sample_project/Build/Android/*.apk', allowEmptyArchive: true
+            }
+        }
+    }
+}

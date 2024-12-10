@@ -1,0 +1,30 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Unity3D Test Runner - EditMode') { 
+            agent {         
+                docker {          
+                    image 'unityci/editor:2022.3.35f1-android-3'
+                    args '-v ${PWD}:/usr/src/app -v /tmp:/.local -v /tmp:/.config -v /tmp:/.cache -w /usr/src/app'
+                    reuseNode true       
+                } 
+            }   
+            steps {
+                sh 'xvfb-run \
+                        --auto-servernum \
+                        --server-args="-screen 0 640x480x24" \
+                        /opt/unity/Editor/Unity \
+                        -projectPath samples/endless_runner \
+                        -runTests \
+                        -batchmode \
+                        -nographics \
+                        -testResults testResults.xml \
+                        -testPlatform EditMode \
+                        -logFile -'
+                       
+                nunit testResultsPattern: 'samples/endless_runner/testResults.xml'
+            }
+        }
+    }
+}

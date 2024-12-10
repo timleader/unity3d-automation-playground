@@ -1,0 +1,67 @@
+jobs:
+  - script: > 
+      pipelineJob('unity-license') {
+        definition {
+          cpsScm {
+            lightweight()
+            scm {
+              git {
+                remote {
+                    github('timleader/unity-automation-playground', 'https')
+                    credentials('github-api-token')
+                }
+                branch('*/master')
+              }
+            }
+            scriptPath('infrastructure/jobs/unity3d_license/Jenkinsfile')
+          }
+        }
+      }
+  - script: >
+      multibranchPipelineJob('unity') {
+        factory {
+          workflowBranchProjectFactory {
+              scriptPath('sample_project/Jenkins/build/Jenkinsfile')
+          }
+        }
+        branchSources {
+          github {
+            id('unity-automation-playground--build-android')
+            scanCredentialsId('github-api-token')
+            repoOwner('timleader')
+            repository('unity-automation-playground')
+          }
+        }
+      }
+  - script: >
+      multibranchPipelineJob('unity-test') {
+        factory {
+          workflowBranchProjectFactory {
+              scriptPath('sample_project/Jenkins/test/Jenkinsfile')
+          }
+        }
+        branchSources {
+          github {
+            id('unity-automation-playground--build-android')
+            scanCredentialsId('github-api-token')
+            repoOwner('timleader')
+            repository('unity-automation-playground')
+          }
+        }
+      }
+  - script: >
+      multibranchPipelineJob('unity-appium') {
+        factory {
+          workflowBranchProjectFactory {
+              scriptPath('sample_project/Jenkins/appium/Jenkinsfile')
+          }
+        }
+        branchSources {
+          github {
+            id('unity-automation-playground--build-android')
+            scanCredentialsId('github-api-token')
+            repoOwner('timleader')
+            repository('unity-automation-playground')
+          }
+        }
+      }

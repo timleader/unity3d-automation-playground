@@ -1,0 +1,17 @@
+
+# Appium configuration
+appium:
+  scheme: http
+  host: appium
+  port: 4723
+  capabilities:
+    app: http://jenkins:8080/job/unity/job/master/lastSuccessfulBuild/artifact/sample_project/Build/Android/TrashDash.apk
+    appPackage: com.timleader.endless_runner
+    appActivity: com.unity3d.player.UnityPlayerActivity
+    deepLinkPrefix: trash://game
+
+# Connection bridge configuration
+connection_bridge:
+  scheme: http
+  host: 192.168.0.100
+  port: 8081

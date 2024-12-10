@@ -1,0 +1,20 @@
+{
+    "name": "Automation.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f32a252ab4967214d9c6df4e5ed0a8f6",
+        "GUID:9ac7ac1e2e83e6c42a7b55f230100879",
+        "GUID:68e8263849ff6a84ba4171a7bd4d2ccd"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

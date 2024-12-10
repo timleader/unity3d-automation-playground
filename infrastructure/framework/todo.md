@@ -1,0 +1,16 @@
+
+- attribute handling
+- application routes 
+- more streamline api for use in tests
+- services routes
+- attribute query 
+- hijack `StandaloneInputModule` instead of extending
+- formalize into a unity package
+- integrate unity package into sample project 
+- split into multiple github repos 
+- run unit tests externally
+- implement Appium Driver 
+- launch from configuration
+- network resilience
+- input gestures
+- runtime modules 

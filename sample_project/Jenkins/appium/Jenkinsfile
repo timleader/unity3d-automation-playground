@@ -1,0 +1,27 @@
+pipeline {
+    agent none 
+    stages {
+        stage('Appium Test') {
+            agent {
+                docker {
+                    image 'mono:6.12.0.182'
+                    args '-u root --privileged --network infrastructure_automation-network'
+                    reuseNode true
+                }
+            } 
+            steps {
+
+                sh 'nuget install NUnit.Console -Version 3.18.3 -DirectDownload -OutputDirectory .'
+
+                sh 'nuget restore ./sample_project/Tests/Automation.Tests.csproj'
+                sh 'msbuild ./sample_project/Tests/Automation.Tests.csproj'
+
+                sh 'cp ./sample_project/Jenkins/appium/config.yaml ./'
+
+                sh 'mono --runtime=v4.0 ./NUnit.ConsoleRunner.3.18.3/tools/nunit3-console.exe --framework=mono-4.0 ./sample_project/Tests/bin/Debug/net462/Automation.Tests.dll -tp config=config.yaml'
+
+                nunit testResultsPattern: 'TestResult.xml'
+            } 
+        }
+    }
+}
