@@ -13,9 +13,9 @@ pipeline {
 
                 sh 'nuget install NUnit.Console -Version 3.18.3 -DirectDownload -OutputDirectory .'
 
-                sh 'nuget restore -PackagesDirectory ./infrastructure/framework/packages ./infrastructure/framework/Automation.Common/Automation.Common.csproj'
-                sh 'nuget restore -PackagesDirectory ./infrastructure/framework/packages ./infrastructure/framework/Automation.TestFramework/Automation.TestFramework.csproj'
-                sh 'nuget restore ./sample_project/Tests/Automation.Tests.csproj'
+                sh 'nuget restore -PackagesDirectory ./packages ./infrastructure/framework/Automation.Common/Automation.Common.csproj'
+                sh 'nuget restore -PackagesDirectory ./packages ./infrastructure/framework/Automation.TestFramework/Automation.TestFramework.csproj'
+                sh 'nuget restore -PackagesDirectory ./packages ./sample_project/Tests/Automation.Tests.csproj'
 
                 sh 'msbuild ./sample_project/Tests/Automation.Tests.csproj'
 
