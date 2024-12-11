@@ -12,9 +12,7 @@
             "program": "${workspaceFolder}/main.go",
             "cwd": "${workspaceFolder}",
             "env": {
-                "DB_SOURCE": "host=127.0.0.1 port=5432 password=localdb user=postgres dbname=nakama sslmode=disable",
                 "HTTP_PORT": "8081",
-                "HTTP_ACCESSKEY": "1234567890",
             }
         }
     ]
